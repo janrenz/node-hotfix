@@ -1,0 +1,47 @@
+name: build
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { tag: n8n-2.33.5, base: "n8nio/n8n:2.33.5", flavor: alpine, user: node }
+          - { tag: n8n-runners-2.33.5, base: "n8nio/runners:2.33.5", flavor: alpine, user: runner }
+          - { tag: uptime-kuma-2, base: "louislam/uptime-kuma:2", flavor: bookworm-slim, user: root }
+          - { tag: twenty-v1.20.0, base: "twentycrm/twenty:v1.20.0", flavor: alpine, user: "1000" }
+          - { tag: twenty-v1.20, base: "twentycrm/twenty:v1.20", flavor: alpine, user: "1000" }
+          - { tag: twenty-v1.16, base: "twentycrm/twenty:v1.16", flavor: alpine, user: "1000" }
+          - { tag: strapi-v5.33.4, base: "elestio/strapi-production:v5.33.4", flavor: bookworm-slim, user: root }
+          - { tag: penpot-exporter-2.11.1, base: "penpotapp/exporter:2.11.1", flavor: bookworm-slim, user: "penpot:penpot" }
+          - { tag: supabase-studio-2026.03.16-sha-5528817, base: "supabase/studio:2026.03.16-sha-5528817", flavor: bookworm-slim, user: root }
+          - { tag: formbricks-latest, base: "ghcr.io/formbricks/formbricks:latest", flavor: alpine, user: nextjs }
+          - { tag: umami-3.0.3, base: "ghcr.io/umami-software/umami:3.0.3", flavor: alpine, user: nextjs }
+          - { tag: shelf-latest, base: "ghcr.io/shelf-nu/shelf.nu:latest", flavor: bookworm-slim, user: root }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/amd64
+          pull: true
+          push: true
+          provenance: false
+          build-args: |
+            BASE=${{ matrix.base }}
+            FLAVOR=${{ matrix.flavor }}
+            RESTORE_USER=${{ matrix.user }}
+          tags: ghcr.io/${{ github.repository_owner }}/node-hotfix:${{ matrix.tag }}
