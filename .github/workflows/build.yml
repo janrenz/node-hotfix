@@ -24,6 +24,8 @@ jobs:
           - { tag: supabase-studio-2026.03.16-sha-5528817, base: "supabase/studio:2026.03.16-sha-5528817", flavor: bookworm-slim, user: root }
           - { tag: formbricks-latest, base: "ghcr.io/formbricks/formbricks:latest", flavor: alpine, user: nextjs }
           - { tag: umami-3.0.3, base: "ghcr.io/umami-software/umami:3.0.3", flavor: alpine, user: nextjs }
+          - { tag: supabase-storage-api-v1.44.2, base: "supabase/storage-api:v1.44.2", flavor: alpine, user: root }
+          - { tag: supabase-postgres-meta-v0.100.0, base: "supabase/postgres-meta:v0.100.0", flavor: bookworm-slim, user: root }
           - { tag: shelf-latest, base: "ghcr.io/shelf-nu/shelf.nu:latest", flavor: bookworm-slim, user: root }
     steps:
       - uses: actions/checkout@v4
