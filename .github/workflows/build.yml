@@ -22,7 +22,7 @@ jobs:
           - { tag: strapi-v5.33.4, base: "elestio/strapi-production:v5.33.4", flavor: bookworm-slim, user: root }
           - { tag: penpot-exporter-2.11.1, base: "penpotapp/exporter:2.11.1", flavor: bookworm-slim, user: "penpot:penpot" }
           - { tag: supabase-studio-2026.03.16-sha-5528817, base: "supabase/studio:2026.03.16-sha-5528817", flavor: bookworm-slim, user: root }
-          - { tag: formbricks-latest, base: "ghcr.io/formbricks/formbricks:latest", flavor: alpine, user: nextjs }
+          - { tag: formbricks-4.9.7, base: "ghcr.io/formbricks/formbricks:4.9.7", flavor: alpine, user: nextjs }
           - { tag: umami-3.0.3, base: "ghcr.io/umami-software/umami:3.0.3", flavor: alpine, user: nextjs }
           - { tag: supabase-storage-api-v1.44.2, base: "supabase/storage-api:v1.44.2", flavor: alpine, user: root }
           - { tag: supabase-postgres-meta-v0.100.0, base: "supabase/postgres-meta:v0.100.0", flavor: bookworm-slim, user: root }
