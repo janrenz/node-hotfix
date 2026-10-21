@@ -47,3 +47,27 @@ jobs:
             FLAVOR=${{ matrix.flavor }}
             RESTORE_USER=${{ matrix.user }}
           tags: ghcr.io/${{ github.repository_owner }}/node-hotfix:${{ matrix.tag }}
+
+  php:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        tag: [hievents-latest, nextcloud-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: php
+          file: php/${{ matrix.tag == 'hievents-latest' && 'hievents' || 'nextcloud' }}.Dockerfile
+          platforms: linux/amd64
+          pull: true
+          push: true
+          provenance: false
+          tags: ghcr.io/${{ github.repository_owner }}/php-hotfix:${{ matrix.tag }}
